@@ -17,7 +17,7 @@
       <tr>
         <td><%= task.title %></td>
         <td><%= task.content %></td>
-        <td><%= task.created_at %></td>
+        <td><%= l task.created_at, format: :long %></td>
         <td><%= link_to t('common.show'), task, id: 'show-task' %></td>
         <td><%= link_to t('common.edit'), edit_task_path(task), id: 'edit-task' %></td>
         <td><%= link_to t('common.destroy'), task, method: :delete, data: { confirm: t('common.confirm_destroy') }, id: 'destroy-task' %></td>

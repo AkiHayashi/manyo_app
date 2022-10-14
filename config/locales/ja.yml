@@ -23,6 +23,11 @@ ja:
     destroy: 削除
     back: 戻る
     confirm_destroy: 本当に削除してもよろしいですか？
+  time:
+    formats:
+      default: "%Y/%m/%d %H:%M:%S"
+      short: "%m/%d %H:%M"
+      long: "%Y/%m/%d %H:%M"
   tasks:
     new_task: タスクを登録する
     task_index: タスク一覧

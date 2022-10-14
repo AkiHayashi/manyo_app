@@ -12,7 +12,7 @@
 
 <p>
   <strong><%= t("activerecord.attributes.task.created_at")%></strong>
-  <%= @task.created_at %>
+  <%= l @task.created_at, format: :long %>
 </p>
 
 <%= link_to t('common.edit'), edit_task_path(@task), id: 'edit-task' %> |
