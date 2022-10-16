@@ -87,9 +87,9 @@ RSpec.describe 'タスク管理機能', type: :system do
           expect(task_list[3].text).to have_content('書類作成')
         end
       end
-      context '「優先順位」というリンクをクリックした場合' do
+      context '「優先度」というリンクをクリックした場合' do
         it "優先度の高い順に並び替えられたタスク一覧が表示される" do
-          click_on '優先順位'
+          click_on '優先度'
           sleep 2
 
           task_list = all('body tr')
