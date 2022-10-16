@@ -5,7 +5,7 @@
 <%= form_with scope: :search, url: tasks_path, method: :get, local: true do |form| %>
   <div class="field">
     <%= form.label t("activerecord.attributes.task.status") %>
-    <%= form.select :status, options_for_select(Task.statuses.keys), include_blank: "選択して下さい" %>
+    <%= form.select :status, options_for_select(Task.statuses.keys), include_blank: "" %>
   </div>
   <div class="field">
     <%= form.label t("activerecord.attributes.task.title") %>
