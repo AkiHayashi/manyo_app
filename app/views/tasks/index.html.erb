@@ -2,6 +2,20 @@
 
 <h1><%= t('.title') %></h1>
 
+<%= form_with scope: :search, url: tasks_path, method: :get, local: true do |form| %>
+  <div class="field">
+    <%= form.label t("activerecord.attributes.task.status") %>
+    <%= form.select :status, options_for_select(Task.statuses.keys), include_blank: "選択して下さい" %>
+  </div>
+  <div class="field">
+    <%= form.label t("activerecord.attributes.task.title") %>
+    <%= form.text_field :title %>
+  </div>
+  <div class="actions">
+    <%= form.submit 'Search', name: nil %>
+  </div>
+<% end %>
+
 <table>
   <thead>
     <tr>
