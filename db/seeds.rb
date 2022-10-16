@@ -10,8 +10,5 @@
   Task.create!(
     title: "タスクタイトル#{n + 1}",
     content: "内容#{n + 1}",
-    deadline_on: Date.today.since(30),
-    priority: [0, 1, 2].sample,
-    status: [0, 1, 2].sample
   )
 end

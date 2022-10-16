@@ -21,21 +21,6 @@
     <%= form.text_area :content %>
   </div>
 
-  <div class="field">
-    <%= form.label :deadline_on %>
-    <%= form.date_field :deadline_on %>
-  </div>
-
-  <div class="field">
-    <%= form.label :priority %>
-    <%= form.select :priority, options_for_select(Task.priorities.keys) %>
-  </div>
-
-  <div class="field">
-    <%= form.label :status %>
-    <%= form.select :status, options_for_select(Task.statuses.keys) %>
-  </div>
-
   <div class="actions", id="update-task">
     <%= form.submit %>
   </div>
