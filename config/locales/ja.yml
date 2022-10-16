@@ -8,6 +8,9 @@ ja:
         content: 内容
         content_description: 説明
         created_at: 作成日時
+        deadline_on: 終了期限
+        priority: 優先度
+        status: ステータス
   errors:
     format: "%{attribute}%{message}"
     messages:
@@ -28,6 +31,9 @@ ja:
       default: "%Y/%m/%d %H:%M:%S"
       short: "%m/%d %H:%M"
       long: "%Y/%m/%d %H:%M"
+  date:
+    formats:
+      default: "%Y/%m/%d"
   tasks:
     new_task: タスクを登録する
     task_index: タスク一覧
