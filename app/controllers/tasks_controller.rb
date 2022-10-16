@@ -9,9 +9,9 @@ class TasksController < ApplicationController
     tasks = search_tasks(tasks)
 
     @tasks = if params[:sort_deadline_on] == 'true'
-              tasks.order_by_deadline_on
+              tasks.order_by_deadline_on.order_by_created_at
             elsif params[:sort_priority] == 'true'
-              tasks.order_by_priority
+              tasks.order_by_priority.order_by_created_at
             else
               tasks.order_by_created_at
             end
