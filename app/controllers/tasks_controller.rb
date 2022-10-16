@@ -5,7 +5,16 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all.order(created_at: :desc).page(params[:page]).per(PER_PAGE)
+    tasks = Task.all.page(params[:page]).per(PER_PAGE)
+    tasks = search_tasks(tasks)
+
+    @tasks = if params[:sort_deadline_on] == 'true'
+              tasks.order_by_deadline_on.order_by_created_at
+            elsif params[:sort_priority] == 'true'
+              tasks.order_by_priority.order_by_created_at
+            else
+              tasks.order_by_created_at
+            end
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -67,6 +76,26 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:title, :content)
+      params.require(:task).permit(:title, :content, :deadline_on, :priority, :status)
+    end
+
+    def search_tasks(tasks)
+      return tasks if params[:search].nil?
+
+      tasks = search_by_title(tasks)
+      tasks = search_by_status(tasks)
+      tasks
+    end
+
+    def search_by_title(tasks)
+      return tasks if params[:search][:title].blank?
+
+      tasks.search_by_title(params[:search][:title])
+    end
+
+    def search_by_status(tasks)
+      return tasks if params[:search][:status].blank?
+
+      tasks.search_by_status(params[:search][:status].to_sym)
     end
 end
