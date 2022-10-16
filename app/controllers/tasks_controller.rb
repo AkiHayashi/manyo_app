@@ -9,11 +9,11 @@ class TasksController < ApplicationController
     tasks = search_tasks(tasks)
 
     @tasks = if params[:sort_deadline_on] == 'true'
-              tasks.order(deadline_on: :asc)
+              tasks.order_by_deadline_on
             elsif params[:sort_priority] == 'true'
-              tasks.order(priority: :desc)
+              tasks.order_by_priority
             else
-              tasks.order(created_at: :desc)
+              tasks.order_by_created_at
             end
   end
 
@@ -90,12 +90,12 @@ class TasksController < ApplicationController
     def search_by_title(tasks)
       return tasks if params[:search][:title].blank?
 
-      tasks.where("title LIKE ?", "%#{params[:search][:title]}%")
+      tasks.search_by_title(params[:search][:title])
     end
 
     def search_by_status(tasks)
       return tasks if params[:search][:status].blank?
 
-      tasks.where(status: params[:search][:status].to_sym)
+      tasks.search_by_status(params[:search][:status].to_sym)
     end
 end
