@@ -7,8 +7,8 @@ RSpec.describe 'タスク管理機能', type: :system do
         visit new_task_path
         fill_in "task_title",	with: "test" 
         fill_in "task_content",	with: "test content" 
-        click_on 'Create Task'
-        expect(page).to have_content 'Task was successfully created.'
+        click_on '登録する'
+        expect(page).to have_content 'タスクを登録しました'
         expect(page).to have_content 'test'
         expect(page).to have_content 'test content'
       end
@@ -16,14 +16,30 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
 
   describe '一覧表示機能' do
+    let!(:first_task) { FactoryBot.create(:task, title: '書類作成', content: 'テスト１', created_at: Time.zone.local(2022, 2, 18)) }
+    let!(:second_task) { FactoryBot.create(:task, title: '競合調査', content: 'テスト２', created_at: Time.zone.local(2022, 2, 17)) }
+    let!(:third_task) { FactoryBot.create(:task, title: 'タスク管理', content: 'テスト３', created_at: Time.zone.local(2022, 2, 16)) }
+
+    before { visit tasks_path }
+
     context '一覧画面に遷移した場合' do
-      it '登録済みのタスク一覧が表示される' do
-        # テストで使用するためのタスクを登録
-        FactoryBot.create(:task)
-        visit tasks_path
-        # visit（遷移）したpage（この場合、タスク一覧画面）に"書類作成"という文字列が、have_content（含まれていること）をexpect（確認・期待）する
-        expect(page).to have_content '書類作成'
-        # expectの結果が「真」であれば成功、「偽」であれば失敗としてテスト結果が出力される
+      it '作成済みのタスク一覧が作成日時の降順で表示される' do
+        task_list = all('body tr')
+        expect(task_list[1].text).to eq('書類作成 テスト１ 2022/02/18 00:00 詳細 編集 削除')
+        expect(task_list[2].text).to eq('競合調査 テスト２ 2022/02/17 00:00 詳細 編集 削除')
+        expect(task_list[3].text).to eq('タスク管理 テスト３ 2022/02/16 00:00 詳細 編集 削除')
+      end
+    end
+    context '新たにタスクを作成した場合' do
+      it '新しいタスクが一番上に表示される' do
+        click_on 'タスクを登録する'
+        visit new_task_path
+        fill_in "task_title",	with: "test" 
+        fill_in "task_content",	with: "test content" 
+        click_on '登録する'
+
+        task_list = all('body tr')
+        expect(task_list[1].text).to have_content('test test content')
       end
     end
   end
