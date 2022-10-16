@@ -1,19 +1,19 @@
 <p id="notice"><%= notice %></p>
-<h1>Show Task Page</h1>
+<h1><%= t('.title') %></h1>
 <p>
-  <strong>Title:</strong>
+  <strong><%= t("activerecord.attributes.task.title")%></strong>
   <%= @task.title %>
 </p>
 
 <p>
-  <strong>Content:</strong>
+  <strong><%= t("activerecord.attributes.task.content_description")%></strong>
   <%= @task.content %>
 </p>
 
 <p>
-  <strong>Created_at:</strong>
-  <%= @task.created_at %>
+  <strong><%= t("activerecord.attributes.task.created_at")%></strong>
+  <%= l @task.created_at, format: :long %>
 </p>
 
-<%= link_to 'Edit', edit_task_path(@task), id: 'edit-task' %> |
-<%= link_to 'Back', tasks_path, id: 'back' %>
+<%= link_to t('common.edit'), edit_task_path(@task), id: 'edit-task' %> |
+<%= link_to t('common.back'), tasks_path, id: 'back' %>

@@ -1,9 +1,11 @@
 class TasksController < ApplicationController
+  PER_PAGE = 10
+
   before_action :set_task, only: %i[ show edit update destroy ]
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = Task.all.order(created_at: :desc).page(params[:page]).per(PER_PAGE)
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -25,7 +27,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to tasks_path, notice: "Task was successfully created." }
+        format.html { redirect_to tasks_path, notice: t('.created') }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +40,7 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
-        format.html { redirect_to task_url(@task), notice: "Task was successfully updated." }
+        format.html { redirect_to task_url(@task), notice: t('.updated') }
         format.json { render :show, status: :ok, location: @task }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +54,7 @@ class TasksController < ApplicationController
     @task.destroy
 
     respond_to do |format|
-      format.html { redirect_to tasks_path, notice: "Task was successfully destroyed." }
+      format.html { redirect_to tasks_path, notice: t('.destroyed') }
       format.json { head :no_content }
     end
   end
