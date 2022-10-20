@@ -6,12 +6,29 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+first_user = User.create!(
+  name: 'aki',
+  email: 'a@ex.com',
+  password: 'password',
+  password_confirmation: 'password',
+  admin: false
+)
+
+second_user = User.create!(
+  name: 'neko',
+  email: 'neko@ex.com',
+  password: 'password',
+  password_confirmation: 'password',
+  admin: false
+)
+
 50.times do |n|
   Task.create!(
     title: "タスクタイトル#{n + 1}",
     content: "内容#{n + 1}",
     deadline_on: Date.today.since(30),
     priority: [0, 1, 2].sample,
-    status: [0, 1, 2].sample
+    status: [0, 1, 2].sample,
+    user_id: [first_user.id, second_user.id].sample
   )
 end
