@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'タスクモデル機能', type: :model do
+  let!(:user) { FactoryBot.create(:user) }
+
   describe 'バリデーションのテスト' do
     context 'タスクのタイトルが空文字の場合' do
       it 'バリデーションに失敗する' do
@@ -18,7 +20,7 @@ RSpec.describe 'タスクモデル機能', type: :model do
 
     context 'タスクのタイトルと説明に値が入っている場合' do
       it 'タスクを登録できる' do
-        task = FactoryBot.create(:task, title: '企画会議', content: '企画書を作成する。')
+        task = FactoryBot.create(:task, title: '企画会議', content: '企画書を作成する。', user: user)
         expect(task).to be_valid
       end
     end
@@ -30,28 +32,32 @@ RSpec.describe 'タスクモデル機能', type: :model do
                         title: 'タスクA',
                         deadline_on: Date.new(2025-02-18), 
                         priority: :中, 
-                        status: :未着手)
+                        status: :未着手,
+                        user: user)
     end
     let!(:task_2) do
       FactoryBot.create(:task,
                         title: 'タスクB',
                         deadline_on: Date.new(2025-02-17), 
                         priority: :高	, 
-                        status: :着手中)
+                        status: :着手中,
+                        user: user)
     end
     let!(:task_3) do
       FactoryBot.create(:task,
                         title: 'タスクC',
                         deadline_on: Date.new(2025-02-18), 
                         priority: :低, 
-                        status: :完了)
+                        status: :完了,
+                        user: user)
     end
     let!(:task_4) do
       FactoryBot.create(:task,
                         title: 'タスクD',
                         deadline_on: Date.new(2025-02-18), 
                         priority: :低, 
-                        status: :完了)
+                        status: :完了,
+                        user: user)
     end
 
     context 'scopeメソッドでタイトルのあいまい検索をした場合' do

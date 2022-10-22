@@ -1,11 +1,13 @@
 class TasksController < ApplicationController
+  before_action :correct_user, only: %i[show edit update]
+
   PER_PAGE = 10
 
   before_action :set_task, only: %i[ show edit update destroy ]
 
   # GET /tasks or /tasks.json
   def index
-    tasks = Task.all.page(params[:page]).per(PER_PAGE)
+    tasks = current_user.tasks.all.page(params[:page]).per(PER_PAGE)
     tasks = search_tasks(tasks)
 
     @tasks = if params[:sort_deadline_on] == 'true'
@@ -23,7 +25,7 @@ class TasksController < ApplicationController
 
   # GET /tasks/new
   def new
-    @task = Task.new
+    @task = current_user.tasks.new
   end
 
   # GET /tasks/1/edit
@@ -32,7 +34,7 @@ class TasksController < ApplicationController
 
   # POST /tasks or /tasks.json
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.new(task_params)
 
     respond_to do |format|
       if @task.save
@@ -69,33 +71,38 @@ class TasksController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_task
-      @task = Task.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_task
+    @task = Task.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def task_params
-      params.require(:task).permit(:title, :content, :deadline_on, :priority, :status)
-    end
+  # Only allow a list of trusted parameters through.
+  def task_params
+    params.require(:task).permit(:title, :content, :deadline_on, :priority, :status)
+  end
 
-    def search_tasks(tasks)
-      return tasks if params[:search].nil?
+  def search_tasks(tasks)
+    return tasks if params[:search].nil?
 
-      tasks = search_by_title(tasks)
-      tasks = search_by_status(tasks)
-      tasks
-    end
+    tasks = search_by_title(tasks)
+    tasks = search_by_status(tasks)
+    tasks
+  end
 
-    def search_by_title(tasks)
-      return tasks if params[:search][:title].blank?
+  def search_by_title(tasks)
+    return tasks if params[:search][:title].blank?
 
-      tasks.search_by_title(params[:search][:title])
-    end
+    tasks.search_by_title(params[:search][:title])
+  end
 
-    def search_by_status(tasks)
-      return tasks if params[:search][:status].blank?
+  def search_by_status(tasks)
+    return tasks if params[:search][:status].blank?
 
-      tasks.search_by_status(params[:search][:status].to_sym)
-    end
+    tasks.search_by_status(params[:search][:status].to_sym)
+  end
+
+  def correct_user
+    user = Task.find(params[:id]).user
+    redirect_to tasks_path, notice: 'アクセス権限がありません' unless current_user?(user)
+  end
 end

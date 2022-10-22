@@ -1,0 +1,36 @@
+<p id="notice"><%= notice %></p>
+
+<h1>ユーザ詳細ページ</h1>
+<p>名前: <%= @user.name %></p>
+<p>メールアドレス: <%= @user.email %></p>
+<p>管理者権限: <%= @user.admin? ? 'あり' : 'なし' %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th><%= t("activerecord.attributes.task.title")%></th>
+      <th><%= t("activerecord.attributes.task.content")%></th>
+      <th><%= t("activerecord.attributes.task.created_at")%></th>
+      <th><%= t("activerecord.attributes.task.deadline_on") %></th>
+      <th><%= t("activerecord.attributes.task.priority")%></th>
+      <th><%= t("activerecord.attributes.task.status")%></th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @user.tasks.each do |task| %>
+      <tr>
+        <td><%= task.title %></td>
+        <td><%= task.content %></td>
+        <td><%= l task.created_at, format: :long %></td>
+        <td><%= l task.deadline_on, format: :default %></td>
+        <td><%= task.priority %></td>
+        <td><%= task.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<%= link_to t('common.back'), admin_users_path, id: 'back' %>
