@@ -1,7 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe 'タスク管理機能', type: :system do
+  let!(:user) { FactoryBot.create(:user, name: 'test_user', email: 'test1@ex.com', password: 'password', password_confirmation: 'password', admin: false) }
+  def log_in
+    visit new_session_path
+    fill_in "session[email]",	with: "test1@ex.com" 
+    fill_in "session[password]",	with: "password" 
+    click_on 'create-session'
+  end
+
   describe '登録機能' do
+    before { log_in }
+
     context 'タスクを登録した場合' do
       it '登録したタスクが表示される' do
         visit new_task_path
@@ -19,6 +29,8 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
 
   describe '一覧表示機能' do
+    before { log_in }
+
     let!(:first_task) do
       FactoryBot.create(:task, 
                         title: '書類作成',
@@ -26,7 +38,8 @@ RSpec.describe 'タスク管理機能', type: :system do
                         created_at: Time.zone.local(2022, 2, 18),
                         deadline_on: Time.zone.local(2025, 03, 03),
                         priority: :低,
-                        status: :着手中)
+                        status: :着手中,
+                        user: user)
     end
     let!(:second_task) do
       FactoryBot.create(:task, 
@@ -35,7 +48,8 @@ RSpec.describe 'タスク管理機能', type: :system do
                         created_at: Time.zone.local(2022, 2, 17),
                         deadline_on: Time.zone.local(2025, 03, 01),
                         priority: :中,
-                        status: :未着手)
+                        status: :未着手,
+                        user: user)
     end
     let!(:third_task) do
       FactoryBot.create(:task, 
@@ -44,7 +58,8 @@ RSpec.describe 'タスク管理機能', type: :system do
                         created_at: Time.zone.local(2022, 2, 16),
                         deadline_on: Time.zone.local(2025, 03, 02),
                         priority: :高,
-                        status: :完了)
+                        status: :完了,
+                        user: user)
     end
 
     before { visit tasks_path }
@@ -138,9 +153,11 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
 
   describe '詳細表示機能' do
+    before { log_in }
+
     context '任意のタスク詳細画面に遷移した場合' do
       it 'そのタスクの内容が表示される' do
-        task = FactoryBot.create(:task, title: '競合調査', content: '他社のサービスを調査する。')
+        task = FactoryBot.create(:task, title: '競合調査', content: '他社のサービスを調査する。', user: user)
         visit task_path(task)
         expect(page).to have_content '競合調査'
         expect(page).to have_content '他社のサービスを調査する。'
