@@ -2,6 +2,7 @@ FactoryBot.define do
   # 作成するテストデータの名前を「task」とします
   # 「task」のように実際に存在するクラス名と一致するテストデータの名前をつければ、そのクラスのテストデータを作成されます
   factory :task do
+    user
     title { '書類作成' }
     content { '企画書を作成する。' }
     deadline_on { Date.tomorrow }
