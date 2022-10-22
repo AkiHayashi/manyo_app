@@ -12,14 +12,14 @@
   <body>
     <header>
       <ul>
-        <% if logged_in? %>
+        <% if logged_in? && current_user&.admin?  %>
+          <li><%= link_to 'ユーザ一覧', admin_users_path, id: 'users-index' %></li>
+          <li><%= link_to 'ユーザを追加する', new_admin_user_path, id: 'add-user' %></li>]
+        <% elsif logged_in? %>
           <li><%= link_to t('tasks.task_index'), tasks_path, id: 'tasks-index' %></li>
           <li><%= link_to t('tasks.new_task'), new_task_path, id: 'new-task' %></li>
           <li><%= link_to 'アカウント詳細', user_path(current_user.id), id: 'my-account' %></li>
           <li><%= link_to 'ログアウト', session_path(current_user.id), method: :delete, id: 'sign-out' %></li>
-        <% elsif current_user&.admin?  %>
-          <li><%= link_to 'ユーザ一覧', admin_users_path, id: 'users-index' %></li>
-          <li><%= link_to 'ユーザを追加する', new_admin_user_path, id: 'add-user' %></li>
         <% else %>
           <li><%= link_to 'アカウント登録', new_user_path, id: 'sign-up' %></li>
           <li><%= link_to 'ログイン', new_session_path, id: 'sign-in' %></li>
