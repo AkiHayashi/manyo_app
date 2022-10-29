@@ -122,7 +122,7 @@ RSpec.describe 'ユーザ管理機能', type: :system do
       before { log_in }
 
       it 'タスク一覧画面に遷移し、「管理者以外アクセスできません」というエラーメッセージが表示される' do
-        click_on 'ユーザ一覧'
+        visit admin_users_path
         expect(page).to have_content '管理者以外はアクセスできません'
       end
     end

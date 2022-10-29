@@ -36,8 +36,10 @@ class TasksController < ApplicationController
   def create
     @task = current_user.tasks.new(task_params)
     label_ids = params[:task][:label_ids]
-    label_ids.each do |label_id|
-      @task.task_labels.new(label_id: label_id)
+    if label_ids.present?
+      label_ids.each do |label_id|
+        @task.task_labels.new(label_id: label_id)
+      end
     end
 
     respond_to do |format|
@@ -55,8 +57,10 @@ class TasksController < ApplicationController
   def update
     @task.labels.destroy_all
     label_ids = params[:task][:label_ids]
-    label_ids.each do |label_id|
-      @task.task_labels.new(label_id: label_id)
+    if label_ids.present?
+      label_ids.each do |label_id|
+        @task.task_labels.new(label_id: label_id)
+      end
     end
 
     respond_to do |format|
