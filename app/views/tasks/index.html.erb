@@ -11,6 +11,10 @@
     <%= form.label t("activerecord.attributes.task.title") %>
     <%= form.text_field :title %>
   </div>
+  <div class="field">
+    <%= form.label 'ラベル' %>
+    <%= form.select :label_id, options_for_select(Label.all.map { |label| [label.name, label.id] }.to_h), include_blank: "" %>
+  </div>
   <div class="actions">
     <%= form.submit '検索', id: 'search_task' %>
   </div>

@@ -7,8 +7,8 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    tasks = current_user.tasks.all.page(params[:page]).per(PER_PAGE)
-    tasks = search_tasks(tasks)
+    tasks = current_user.tasks.all
+    tasks = search_tasks(tasks).page(params[:page]).per(PER_PAGE)
 
     @tasks = if params[:sort_deadline_on] == 'true'
               tasks.order_by_deadline_on.order_by_created_at
@@ -96,6 +96,7 @@ class TasksController < ApplicationController
 
     tasks = search_by_title(tasks)
     tasks = search_by_status(tasks)
+    tasks = search_by_label_id(tasks)
     tasks
   end
 
@@ -109,6 +110,12 @@ class TasksController < ApplicationController
     return tasks if params[:search][:status].blank?
 
     tasks.search_by_status(params[:search][:status].to_sym)
+  end
+
+  def search_by_label_id(tasks)
+    return tasks if params[:search][:label_id].blank?
+
+    tasks.search_by_label_id(params[:search][:label_id].to_i)
   end
 
   def correct_user
