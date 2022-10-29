@@ -17,8 +17,10 @@ ActiveRecord::Schema.define(version: 2022_10_29_053139) do
 
   create_table "labels", force: :cascade do |t|
     t.string "name", null: false
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_labels_on_user_id"
   end
 
   create_table "task_labels", id: false, force: :cascade do |t|

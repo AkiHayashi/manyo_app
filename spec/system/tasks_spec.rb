@@ -62,7 +62,7 @@ RSpec.describe 'タスク管理機能', type: :system do
                         user: user)
     end
 
-    let!(:label) { FactoryBot.create(:label, name: 'テストラベル') }
+    let!(:label) { FactoryBot.create(:label, name: 'テストラベル', user: user) }
     let!(:task_label) { FactoryBot.create(:task_label, label: label, task: first_task) }
 
     before { visit tasks_path }

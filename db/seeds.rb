@@ -50,4 +50,10 @@ end
     status: [0, 1, 2].sample,
     user_id: admin_user.id
   )
+
+10.times do |n|
+  Label.create!(
+    name: "ラベル#{n}"
+    user_id: [first_user.id, second_user.id admin_user.id].sample
+  )
 end

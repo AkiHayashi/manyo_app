@@ -23,10 +23,10 @@ RSpec.describe 'ラベル管理機能', type: :system do
   end
   describe '一覧表示機能' do
     context '一覧画面に遷移した場合' do
-      FactoryBot.create(:label, name: 'テスト１')
-      FactoryBot.create(:label, name: 'テスト２')
-
       before do
+        FactoryBot.create(:label, name: 'テスト１', user: user)
+        FactoryBot.create(:label, name: 'テスト２', user: user)
+
         log_in
         visit labels_path
       end

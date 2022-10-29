@@ -3,12 +3,12 @@ class LabelsController < ApplicationController
 
   # GET /Labels or /Labels.json
   def index
-    @labels = Label.all
+    @labels = current_user.labels.all
   end
 
   # GET /Labels/new
   def new
-    @label = Label.new
+    @label = current_user.labels.new
   end
 
   # GET /Labels/1/edit
@@ -17,7 +17,7 @@ class LabelsController < ApplicationController
 
   # POST /Labels or /Labels.json
   def create
-    @label = Label.new(label_params)
+    @label = current_user.labels.new(label_params)
 
     respond_to do |format|
       if @label.save
