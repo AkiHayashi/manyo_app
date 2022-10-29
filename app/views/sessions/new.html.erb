@@ -2,11 +2,13 @@
   <%= content_tag(:div, value, class: "#{key}") %>
 <% end %>
 
-<h1>ログインページ</h1>
-<%= form_with(scope: :session, url: sessions_path, local: true) do |f| %>
-  <%= f.label 'メールアドレス' %>
-  <%= f.email_field :email %>
-  <%= f.label 'パスワード' %>
-  <%= f.password_field :password %>
-  <%= f.submit 'ログイン', id: 'create-session' %>
-<% end %>
+<div class='container'>
+  <h1>ログインページ</h1>
+  <%= form_with(scope: :session, url: sessions_path, local: true) do |f| %>
+    <%= f.label 'メールアドレス' %>
+    <%= f.email_field :email %>
+    <%= f.label 'パスワード' %>
+    <%= f.password_field :password %>
+    <%= f.submit 'ログイン', id: 'create-session', class: "btn btn-info"%>
+  <% end %>
+</div>

@@ -1,8 +1,10 @@
-<p id="notice"><%= notice %></p>
+<p id="notice" class="alert alert-primary" role="alert"><%= notice %></p>
 
-<h1>アカウント詳細ページ</h1>
-<p>名前: <%= @user.name %></p>
-<p>メールアドレス: <%= @user.email %></p>
+<div class='container'>
+  <h1>アカウント詳細ページ</h1>
+  <p>名前: <%= @user.name %></p>
+  <p>メールアドレス: <%= @user.email %></p>
 
-<%= link_to t('common.edit'), edit_user_path(@user), id: 'edit-user' %> |
-<%= link_to t('common.back'), tasks_path, id: 'back' %>
+  <%= link_to t('common.edit'), edit_user_path(@user), id: 'edit-user', class: "btn btn-info" %> |
+  <%= link_to t('common.back'), tasks_path, id: 'back', class: "btn btn-info" %>
+</div>
