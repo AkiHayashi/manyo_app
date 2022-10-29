@@ -35,6 +35,10 @@ class TasksController < ApplicationController
   # POST /tasks or /tasks.json
   def create
     @task = current_user.tasks.new(task_params)
+    label_ids = params[:task][:label_ids]
+    label_ids.each do |label_id|
+      @task.task_labels.new(label_id: label_id)
+    end
 
     respond_to do |format|
       if @task.save
@@ -49,6 +53,12 @@ class TasksController < ApplicationController
 
   # PATCH/PUT /tasks/1 or /tasks/1.json
   def update
+    @task.labels.destroy_all
+    label_ids = params[:task][:label_ids]
+    label_ids.each do |label_id|
+      @task.task_labels.new(label_id: label_id)
+    end
+
     respond_to do |format|
       if @task.update(task_params)
         format.html { redirect_to task_url(@task), notice: t('.updated') }
