@@ -1,4 +1,6 @@
 class Task < ApplicationRecord
+  has_many :task_labels
+  has_many :labels, through: :task_labels
   belongs_to :user
 
   validates :title, presence: true
@@ -15,5 +17,4 @@ class Task < ApplicationRecord
   scope :order_by_deadline_on, -> { order(deadline_on: :asc) }
   scope :order_by_priority, -> { order(priority: :desc) }
   scope :order_by_created_at, -> { order(created_at: :desc) }
-  # Ex:- scope :active, -> {where(:active => true)}
 end
