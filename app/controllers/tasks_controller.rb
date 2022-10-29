@@ -7,8 +7,8 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    tasks = current_user.tasks.all.page(params[:page]).per(PER_PAGE)
-    tasks = search_tasks(tasks)
+    tasks = current_user.tasks.all
+    tasks = search_tasks(tasks).page(params[:page]).per(PER_PAGE)
 
     @tasks = if params[:sort_deadline_on] == 'true'
               tasks.order_by_deadline_on.order_by_created_at
@@ -35,6 +35,12 @@ class TasksController < ApplicationController
   # POST /tasks or /tasks.json
   def create
     @task = current_user.tasks.new(task_params)
+    label_ids = params[:task][:label_ids]
+    if label_ids.present?
+      label_ids.each do |label_id|
+        @task.task_labels.new(label_id: label_id)
+      end
+    end
 
     respond_to do |format|
       if @task.save
@@ -49,6 +55,14 @@ class TasksController < ApplicationController
 
   # PATCH/PUT /tasks/1 or /tasks/1.json
   def update
+    @task.labels.destroy_all
+    label_ids = params[:task][:label_ids]
+    if label_ids.present?
+      label_ids.each do |label_id|
+        @task.task_labels.new(label_id: label_id)
+      end
+    end
+
     respond_to do |format|
       if @task.update(task_params)
         format.html { redirect_to task_url(@task), notice: t('.updated') }
@@ -86,6 +100,7 @@ class TasksController < ApplicationController
 
     tasks = search_by_title(tasks)
     tasks = search_by_status(tasks)
+    tasks = search_by_label_id(tasks)
     tasks
   end
 
@@ -99,6 +114,12 @@ class TasksController < ApplicationController
     return tasks if params[:search][:status].blank?
 
     tasks.search_by_status(params[:search][:status].to_sym)
+  end
+
+  def search_by_label_id(tasks)
+    return tasks if params[:search][:label_id].blank?
+
+    tasks.search_by_label_id(params[:search][:label_id].to_i)
   end
 
   def correct_user

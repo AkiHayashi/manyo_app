@@ -11,32 +11,32 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="field form-group">
     <%= form.label :name %>
     <%= form.text_field :name %>
   </div>
 
-  <div class="field">
+  <div class="field form-group">
     <%= form.label :email %>
     <%= form.email_field :email %>
   </div>
 
-  <div class="field">
+  <div class="field form-group">
     <%= form.label :password %>
     <%= form.password_field :password %>
   </div>
 
-  <div class="field">
+  <div class="field form-group">
     <%= form.label :password_confirmation %>
     <%= form.password_field :password_confirmation %>
   </div>
 
-  <div class="field">
+  <div class="field form-group">
     <%= form.label :admin %>
     <%= form.check_box :admin %>
   </div>
 
   <div class="actions", id='update-user'>
-    <%= form.submit "更新する", id: 'update-user' %>
+    <%= form.submit "更新する", id: 'update-user', class: "btn btn-info" %>
   </div>
 <% end %>

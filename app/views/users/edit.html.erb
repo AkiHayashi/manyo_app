@@ -2,5 +2,5 @@
 
 <%= render 'form', user: @user %>
 
-<%= link_to t('common.show'), @user %> |
-<%= link_to t('common.back'), user_path(@user.id), id: 'back' %>
+<%= link_to t('common.show'), @user, class: "btn btn-info" %> |
+<%= link_to t('common.back'), user_path(@user.id), id: 'back', class: "btn btn-info" %>

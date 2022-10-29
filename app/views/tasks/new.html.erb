@@ -1,44 +1,55 @@
-<h1><%= t('.title') %></h1>
+<div class='container'>
+  <h1><%= t('.title') %></h1>
 
-<%= form_with(model: @task, local: true) do |form| %>
-  <% if @task.errors.any? %>
-    <div id="error_explanation">
-      <ul>
-        <% @task.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <%= form_with(model: @task, local: true) do |form| %>
+    <% if @task.errors.any? %>
+      <div id="error_explanation">
+        <ul>
+          <% @task.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field form-group">
+      <%= form.label :title %>
+      <%= form.text_field :title %>
+    </div>
+
+    <div class="field form-group">
+      <%= form.label :content %>
+      <%= form.text_area :content %>
+    </div>
+
+    <div class="field form-group">
+      <%= form.label :deadline_on %>
+      <%= form.date_field :deadline_on %>
+    </div>
+
+    <div class="field form-group">
+      <%= form.label :priority %>
+      <%= form.select :priority, options_for_select(Task.priorities.keys), include_blank: "" %>
+    </div>
+
+    <div class="field form-group">
+      <%= form.label :status %>
+      <%= form.select :status, options_for_select(Task.statuses.keys), include_blank: "" %>
+    </div>
+
+    <div class="field form-group">
+      <%= form.label 'ラベル' %>
+      <br>
+      <% Label.all.each do |label| %>
+        <%= form.check_box :label_ids, { multiple: true, include_hidden: false }, label[:id] %>
+        <%= label.name %>
+      <% end %>
+    </div>
+
+    <div class="actions", id="create-task">
+      <%= form.submit %>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
-  </div>
-
-  <div class="field">
-    <%= form.label :content %>
-    <%= form.text_area :content %>
-  </div>
-
-  <div class="field">
-    <%= form.label :deadline_on %>
-    <%= form.date_field :deadline_on %>
-  </div>
-
-  <div class="field">
-    <%= form.label :priority %>
-    <%= form.select :priority, options_for_select(Task.priorities.keys), include_blank: "" %>
-  </div>
-
-  <div class="field">
-    <%= form.label :status %>
-    <%= form.select :status, options_for_select(Task.statuses.keys), include_blank: "" %>
-  </div>
-
-  <div class="actions", id="create-task">
-    <%= form.submit %>
-  </div>
-<% end %>
-
-<%= link_to t('common.back'), tasks_path, id: 'back' %>
+  <%= link_to t('common.back'), tasks_path, id: 'back', class: "btn btn-info" %>
+</div>

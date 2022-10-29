@@ -1,4 +1,6 @@
 class Task < ApplicationRecord
+  has_many :task_labels
+  has_many :labels, through: :task_labels
   belongs_to :user
 
   validates :title, presence: true
@@ -12,8 +14,8 @@ class Task < ApplicationRecord
 
   scope :search_by_title, -> (title) { where("title LIKE ?", "%#{title}%") }
   scope :search_by_status, -> (status) { where(status: status) }
+  scope :search_by_label_id, -> (label_id) { left_outer_joins(task_labels: :label).merge(Label.where(id: label_id)) }
   scope :order_by_deadline_on, -> { order(deadline_on: :asc) }
   scope :order_by_priority, -> { order(priority: :desc) }
   scope :order_by_created_at, -> { order(created_at: :desc) }
-  # Ex:- scope :active, -> {where(:active => true)}
 end

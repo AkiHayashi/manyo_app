@@ -62,6 +62,9 @@ RSpec.describe 'タスク管理機能', type: :system do
                         user: user)
     end
 
+    let!(:label) { FactoryBot.create(:label, name: 'テストラベル', user: user) }
+    let!(:task_label) { FactoryBot.create(:task_label, label: label, task: first_task) }
+
     before { visit tasks_path }
 
     context '一覧画面に遷移した場合' do
@@ -147,6 +150,16 @@ RSpec.describe 'タスク管理機能', type: :system do
           expect(page).not_to have_content('タスク管理')
           expect(page).not_to have_content('書類作成')
           # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
+        end
+      end
+
+      context 'ラベルで検索をした場合' do
+        it "そのラベルの付いたタスクがすべて表示される" do
+          find("#search_label_id").find("option[value='#{label.id}']").select_option
+          click_on '検索'
+
+          expect(page).to have_content('書類作成')
+          expect(page).not_to have_content('タスク管理')
         end
       end
     end
