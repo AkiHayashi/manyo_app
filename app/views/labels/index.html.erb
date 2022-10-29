@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<h1>ラベル一覧ページ</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>名前</th>
+      <th>タスク数</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @labels.each do |label| %>
+      <tr>
+        <td><%= label.name %></td>
+        <td><%= label.tasks.count %></td>
+        <td><%= link_to t('common.edit'), edit_label_path(label), class: 'edit-label' %></td>
+        <td><%= link_to t('common.destroy'), label, method: :delete, data: { confirm: t('common.confirm_destroy') }, class: 'destroy-label' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

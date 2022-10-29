@@ -1,0 +1,21 @@
+<h1>ラベル登録ページ</h1>
+<% if @label.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@label.errors.count, '件') %> のエラー</h2>
+    <ul>
+    <% @label.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+<%= form_with(model: @label, local: true) do |f| %>
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <%= f.submit "登録する"%>
+<% end %>
+
+<%= link_to t('common.back'), labels_path, id: 'back' %>
